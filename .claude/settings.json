@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls *)",
+      "Bash(find *)",
+      "Bash(grep *)",
+      "Bash(rg *)"
+    ],
+    "deny": [
+      "Bash(git -C * push *)",
+      "Bash(git -C * commit *)",
+      "Bash(git -C * reset --hard *)",
+      "Bash(git -C * clean *)",
+      "Bash(rm -rf *)",
+      "Bash(aws cloudformation deploy *)",
+      "Bash(aws cloudformation delete-stack *)",
+      "Bash(aws lambda update-function-code *)",
+      "Bash(dotnet lambda deploy-function *)",
+      "Bash(dotnet lambda deploy-serverless *)",
+      "Bash(fastlane *)",
+      "Bash(xcrun altool *)",
+      "Bash(xcrun notarytool *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/enforce-one-repo-per-session.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+# Child repos — each has its own git repo/remote on Azure DevOps, never tracked here
+/Mockoon/
+/MyIsn.Android/
+/MyIsn.iOS/
+
+# OS cruft
+.DS_Store
+
+# Personal/local Claude Code overrides — never shared
+.claude/settings.local.json
+
+# graphify knowledge-graph output (generated, machine-specific)
+graphify-out/
+.claude/.hook-state/
