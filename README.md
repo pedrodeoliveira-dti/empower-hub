@@ -191,6 +191,17 @@ exact one-time override command to run first.
 
 ---
 
+### Upstream check on session start
+
+A `SessionStart` hook (`.claude/settings.json` → `.claude/hooks/check-upstream-updates.sh`) runs
+`git fetch origin master` in each child repo present on disk (`MyIsn.Android`, `MyIsn.iOS`,
+`Mockoon`) every time a Claude Code session starts in this hub. If any repo's local `master` is
+behind `origin/master`, the session is told how many commits per repo and asks whether to pull —
+it never pulls automatically. This only checks the `master` branch; it doesn't know about the
+branch you currently have checked out in each repo.
+
+---
+
 ### `docs/style-guide.md` — design style guide (Android + iOS)
 
 Design system reference (colors, typography, grid/spacing, components, icons, logos). Both apps
