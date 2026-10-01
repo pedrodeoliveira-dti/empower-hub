@@ -1,12 +1,19 @@
 # API Contracts
 
-Source of truth: `Mockoon/mockoon-configs/` — this repo has no app code, only Mockoon mock-server environment exports. Real backend hostnames were not discoverable from either client repo (they come from remote config at runtime — see `docs/architecture.md`), so **Mockoon's mocked routes are the most concrete API contract available in this workspace.**
+**Real API documentation:** the ISN Stoplight project — <https://isnetworld.stoplight.io/docs/isn-empower/docs/empower/project-empower-apis>. It is the authoritative contract for the real backend; requires ISN access and is not readable by Claude from this hub (no Stoplight connector), so paste the relevant endpoint spec into the session when a task depends on it.
+
+**Mocked routes:** `Mockoon/mockoon-configs/` — this repo has no app code, only Mockoon mock-server environment exports. Real backend hostnames were not discoverable from either client repo (they come from remote config at runtime — see `docs/architecture.md`), so Mockoon's routes are the most concrete *in-workspace* contract, but they can drift from Stoplight — Stoplight wins on conflict.
+
+## Running against Mockoon
+
+- **Works today:** Mockoon + Charles Proxy (`Map Remote` of `https://*apim.isnetworld.com` → `http://localhost:3000`, with the Charles root CA installed on the emulator/device). Setup steps: `MyIsn.Android/docs/LOCAL_ENVIRONMENT.md`.
+- **Android's built-in "Mocking" environment** is documented as usable with Mockoon, but in practice it does **not** work fully without a certificate that ISN shares per dev/QA via LastPass. `TBD` — confirm with ISN how to obtain it; until then treat Mockoon + Charles as the supported path.
 
 ## How environment selection actually works
 
 Not native Mockoon multi-environment selection — a **custom build-time merge**:
 
-1. `Mockoon/scripts/merge-configs.js` reads `mockoon-configs/_base.json` for shared server settings (port, hostname, CORS, headers), then discovers every other `*.json` under `mockoon-configs/` (`default.json`, `empower/empower.json`, `mobile/isn-mobile.json`), derives a **route prefix from each file's folder path** (`empower/empower.json` → prefix `empower/`; `mobile/isn-mobile.json` → prefix `mobile/`; `default.json` at root → no prefix), and concatenates all routes into one `merged.json`.
+1. `Mockoon/scripts/merge-configs.js` reads `mockoon-configs/_base.json` for shared server settings (port, hostname, CORS, headers), then discovers every other `*.json` under `mockoon-configs/` (`default.json`, `empower/empower.json`), derives a **route prefix from each file's folder path** (`empower/empower.json` → prefix `empower/`; `default.json` at root → no prefix), and concatenates all routes into one `merged.json`.
 2. The Docker image (`FROM mockoon/cli:latest`) always serves this single merged file on port 8080 (hardcoded in the `Dockerfile` `CMD` — note `.github/copilot-instructions.md` in that repo incorrectly claims the port is configurable via a `PORT` env var; it isn't, per the actual Dockerfile).
 3. **Practical effect**: every route from every config file is always present simultaneously in one server, distinguished only by path prefix. A client's configured base URL must already include the right prefix (e.g. `.../empower/`) — the client's own relative request paths (e.g. `v1/hazard-assistant/config`) do **not** repeat that prefix themselves. This is exactly what `MyIsn.Android`'s `docs/LOCAL_ENVIRONMENT.md` means by "requires an `empower` prefix under Mockoon's API URL settings."
 4. `_base.json` itself defines **no routes** — it's a settings template only consumed by the merge script, not a live "extends" reference.
@@ -42,23 +49,3 @@ This is the environment both `MyIsn.Android` (`IsnService.kt`, 118 endpoints) an
 | Wallet | `POST/PUT /v2/wallets/apple-passes/isn-id-cards` | **iOS only, confirmed.** Android calls `wallets/google-passes/isn-id-cards` for the same feature (Google Wallet) — **no matching Mockoon route found for the Android path.** This is a real local-dev gap: add a `google-passes` route to `empower/empower.json` if Android needs to mock this flow locally. |
 | WorkReadyProfile (v1) | `GET/POST/DELETE /work-ready-profile/*` (job-titles, skills, experiences) | Not independently confirmed against either app's endpoint list — worth verifying |
 | Emergency Notifications | `GET /emergency/active`, `POST /emergency/{id}/status` | Not independently confirmed against either app's endpoint list — worth verifying |
-
-## Environment: `mobile/isn-mobile.json` (prefix `mobile/`) — 21 routes, 5 folders
-
-**No consumer was found** for this environment in either `MyIsn.Android` or `MyIsn.iOS` as analyzed — neither app's endpoint list includes `sso/connections`, `accounts`, `permissions`, or `quarterly-verification`. The `hazard-assistant`/`toolbox-talks` routes here duplicate `empower/`'s (same paths, different prefix, and without the `v2` on toolbox-talks). Flagging as an **open question** rather than guessing: this may be a legacy or different consumer, or functionality not yet wired up client-side. Route table (for completeness):
-
-| Method | Path | Notable response codes |
-|---|---|---|
-| POST | `/v1/sso/connections` | 426 (upgrade required), 200 ×4, 400/404/409, 500 |
-| GET | `/v1/accounts` | 426, 200 ×8, 401/409, 500 |
-| GET | `/v1/permissions` | 426, 200, 401/404, 500 |
-| GET | `/v1/permissions/catalog` | 426, 200, 304, 500 |
-| GET/POST | `/v1/hazard-assistant/*` | mirrors `empower/`'s hazard-assistant routes |
-| GET/POST/PUT | `/v1/toolbox-talks/*` | mirrors `empower/`'s toolbox-talks routes, without the `v2` prefix |
-| GET/POST | `/v1/quarterly-verification` | 426, 200/204, 400/401, 500 |
-
-The `426` (upgrade required) pattern on several routes here — not seen in `empower/`'s routes — suggests a forced-update/version-gate flow specific to this environment; worth investigating if this is a legacy API version still in use somewhere.
-
-## Third-party contracts (non-Mockoon)
-
-Beyond the ISN backend mocked above, both clients integrate real third-party SDKs directly (not mocked here): Firebase (Analytics/Crashlytics/Remote Config, +Performance/FCM/Dynamic Links on Android, +Performance on iOS), MSAL/Azure AD B2C, Pendo, Qualtrics, Radar (geolocation). See `docs/observability.md` and `docs/architecture.md` for what each is used for. Contract changes to the real ISN backend API (the routes above) should be treated as the primary "third-party contract" this hub's `/speckit.plan`/`/speckit.review` care about, alongside these SDKs' own breaking changes.

@@ -12,3 +12,6 @@
 # graphify knowledge-graph output (generated, machine-specific)
 graphify-out/
 .claude/.hook-state/
+
+# Generated PDF exports of reports (regenerable from the .md)
+*.pdf
