@@ -1,7 +1,5 @@
 # Child repos — each has its own git repo/remote on Azure DevOps, never tracked here
-/Mockoon/
-/MyIsn.Android/
-/MyIsn.iOS/
+/repos/
 
 # OS cruft
 .DS_Store
