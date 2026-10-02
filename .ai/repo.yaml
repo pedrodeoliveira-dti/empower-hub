@@ -1,0 +1,38 @@
+# AI navigation entry point. Read this first.
+# Human docs remain the source of truth: CLAUDE.md, docs/, constitution/.
+# This file only references; it never duplicates prose from those sources.
+
+project:
+  name: empower
+  description: >-
+    Cross-platform orchestration hub for the Empower product. Holds no product
+    source code. Turns a PBI into a spec, per-repo plan/tasks, implementation,
+    and a reviewed PR across the child repos.
+  kind: orchestration-hub
+  root_doc: CLAUDE.md
+  repo_paths_from: workspace.config.json
+  child_repos:
+    - path: MyIsn.Android
+      platform: android
+    - path: MyIsn.iOS
+      platform: ios
+    - path: Mockoon
+      platform: mock-backend
+
+governance:
+  constitution: constitution/EMPOWER-HUB-CONSTITUTION.md
+  principles: constitution/ENGINEERING-PRINCIPLES.md
+  decisions_ledger: docs/governance/current-hub-decisions.md
+  lean_policy: docs/lean-artifact-policy.md
+  adrs: decisions/adr/README.md
+
+reference_docs:
+  - docs/product-overview.md
+  - docs/architecture.md
+  - docs/cross-platform-flows.md
+  - docs/api-contracts.md
+  - docs/observability.md
+  - docs/style-guide.md
+
+indexes:
+  symbols: .ai/symbols.yaml   # commands, agents, skills, governance files

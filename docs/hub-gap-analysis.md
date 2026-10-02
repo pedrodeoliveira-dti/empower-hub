@@ -17,19 +17,14 @@ Data: 2026-10-01
 | Constituição | 441 + 463 linhas | 157 + 151 linhas |
 | Camada de navegação `.ai/` | sim | não |
 | Ledger de governança | sim | não |
-| Scripts / dashboards | 3 | 0 |
-| Vendor docs | sim (Olo) | não |
 
 ## Referências quebradas (encontradas na análise)
 
-O `CLAUDE.md` aponta para arquivos que **não existem**:
-
-- `docs/lean-artifact-policy.md`
-- `.claude/agents/agents.md`
+> **Resolvido em 2026-10-01** — `docs/lean-artifact-policy.md` e `.claude/agents/agents.md` foram criados (ver P0).
 
 ---
 
-## P0 — Corrigir antes de expandir
+## P0 — Corrigir antes de expandir (✅ concluído em 2026-10-01)
 
 | # | Item | Origem no Potbelly |
 |---|---|---|
@@ -44,8 +39,8 @@ O `CLAUDE.md` aponta para arquivos que **não existem**:
 
 | Item | O que faz | Por que no Empower |
 |---|---|---|
-| `/validate-workspace` | Checa se `MyIsn.Android`, `MyIsn.iOS` e `Mockoon` estão clonados, em qual branch e se estão limpos ou sujos | O `workspace.config.json` já existe, então é barato |
-| `/sync-context` | Auditoria de drift em modo audit-first entre docs, comandos e constituição; só aplica correções após aprovação | 8 docs de referência vão envelhecer |
+| `/validate-workspace` ✅ | Checa se `MyIsn.Android`, `MyIsn.iOS` e `Mockoon` estão clonados, em qual branch e se estão limpos ou sujos | O `workspace.config.json` já existe, então é barato |
+| `/sync-context` ✅ | Auditoria de drift em modo audit-first entre docs, comandos e constituição; só aplica correções após aprovação | 8 docs de referência vão envelhecer |
 | `/speckit.validation-plan` | Gera o `validation-plan.md` para fluxos de risco | Login/Jumio, ISN ID wallet, geolocalização, certificados, formulários |
 | `/speckit.validate` | Organiza evidências (screenshots, saída de testes) em `pr-evidence.md` | O `/speckit.review` hoje mistura as duas tarefas |
 | `/quick-fix` | Caminho curto para teste quebrado ou bug pequeno, sem o fluxo completo | Evita o fluxo completo de spec para trabalho trivial |
@@ -55,9 +50,9 @@ O `CLAUDE.md` aponta para arquivos que **não existem**:
 
 | Agente | Papel |
 |---|---|
-| `code-reviewer` | Sustenta a revisão de código do `/speckit.review` |
-| `qa-reviewer` | Rastreia critérios de aceite até testes reais |
-| `cross-platform-reviewer` | Compara Android vs iOS e aponta drift (caso real: feature flag do LMS com nome diferente em cada plataforma) |
+| `code-reviewer` ✅ | Sustenta a revisão de código do `/speckit.review` |
+| `qa-reviewer` ✅ | Rastreia critérios de aceite até testes reais |
+| `cross-platform-reviewer` ✅ | Compara Android vs iOS e aponta drift (caso real: feature flag do LMS com nome diferente em cada plataforma) |
 | `current-state-analyzer` | Formaliza o que o `/document-projects` faz hoje (`technical-refinement/*/current-state.md`) |
 | `documentation-maintainer` | Mantém o `docs/` alinhado com a realidade |
 | `code-refactor-planner` | Planeja refactors sem mudar comportamento |
@@ -66,18 +61,20 @@ O `CLAUDE.md` aponta para arquivos que **não existem**:
 
 | Skill | Finalidade |
 |---|---|
-| `bdd-specification` | Critérios de aceite Given/When/Then padronizados |
+| `bdd-specification` ✅ | Critérios de aceite Given/When/Then padronizados |
 | `pbi-clarification` | Poucas perguntas focadas; fecha atualizando a spec |
-| `qa-review` | Rastreabilidade critério → teste real |
+| `qa-review` ✅ | Rastreabilidade critério → teste real |
 | `quality-gates` | Exige evidência antes de avançar |
 | `safe-refactoring` | Refatorar sem mudar comportamento |
 | `security-review` | Mobile: tokens, biometria, Jumio/KYC, PII |
 | `cross-platform-impact` | Formalizar o núcleo do `orchestrate-feature` como skill reutilizável |
 | `android-expert` / `ios-expert` | Camada de roteamento que lê o CLAUDE.md/docs de cada repo; o `speckit.implement` já delega para skills dos repos, mas falta essa camada |
 
-### Templates (o Empower não tem pasta `templates/`)
+### Templates — ❌ descartado (decisão do usuário, 2026-10-01: os comandos continuam apontando para a estrutura inline)
 
 `spec`, `clarify`, `plan`, `tasks`, `pr-evidence`, `pr-summary`, `validation-plan`, `bugs`, `tech-debt`, `platform-spec`, `branch-preparation`.
+
+> **Reavaliado em 2026-10-01:** os comandos `speckit.specify`, `plan` e `review` já definem a estrutura de títulos inline. Criar `templates/` agora duplicaria essa estrutura (contra a regra DRY). Só vale a pena se os comandos passarem a apontar para os templates em vez de embutir a estrutura.
 
 Hoje cada comando provavelmente reinventa a estrutura de títulos. No Potbelly, o `branch-preparation` é uma pré-condição de segurança antes da implementação.
 
@@ -85,9 +82,9 @@ Hoje cada comando provavelmente reinventa a estrutura de títulos. No Potbelly, 
 
 | Item | Detalhe |
 |---|---|
-| `decisions/adr/` | README + `ADR-Template` para decisões que cruzam repos. Candidatos reais: split do LMS, contrato do Mockoon, estratégia de feature flag |
+| `decisions/adr/` ✅ | README + `ADR-Template` para decisões que cruzam repos. Candidatos reais: split do LMS, contrato do Mockoon, estratégia de feature flag |
 | Regra "código de produto nunca referencia o Hub" | Hard rule 11 do Potbelly. Nenhum comentário/string/teste em `MyIsn.*` ou `Mockoon` citando `.claude`, `specs/` etc. Falta na constituição do Empower |
-| Seções que faltam na constituição | Platform Autonomy (Potbelly §13), Segurança e Privacidade (§11), Compatibilidade de API e Impacto no Cliente (§8, relevante porque apps já instalados convivem com contratos novos). Empower: 157 linhas vs 441 |
+| Seções que faltam na constituição ✅ | Platform Autonomy (Potbelly §13), Segurança e Privacidade (§11), Compatibilidade de API e Impacto no Cliente (§8, relevante porque apps já instalados convivem com contratos novos). Empower: 157 linhas vs 441 |
 | Hard rules explícitas no CLAUDE.md | Sem deploy, sem commit/push como efeito colateral, sem mudanças em CI/signing, sem PR automático. Parte está no `deny` do `settings.json`, mas falta como regra escrita |
 | Playbook de MCP ("manual, opt-in") | As skills do Empower usam o Azure DevOps MCP; documentar o que pode ser chamado automaticamente e o que exige pedido explícito |
 | Cadeia de pré-requisitos por plataforma | `--platform ios\|android\|mockoon` obrigatório em plan, tasks, implement, review e PR. Hoje o `enforce-one-repo-per-session` só atua na hora de escrever |
@@ -98,14 +95,10 @@ Hoje cada comando provavelmente reinventa a estrutura de títulos. No Potbelly, 
 | Item | Detalhe |
 |---|---|
 | Hooks de uso de tokens | `token-log-start/stop.sh` + `generate-token-report.py`, com limite diário. Útil com vários devs |
-| Dashboard de release / sprint | `/release-dashboard` + `script/ado-analyzer`: story points, cycle time, rollover por plataforma. Só se a gestão quiser essas métricas |
 | `docs/improvements.md` | Caixa de entrada de ideias de melhoria do hub |
 | Skills de diagrama | `architecture-diagrams` (Mermaid), `drawio-diagram-generation`, `.github/instructions/mermaid.instructions.md`. Úteis para o `cross-platform-flows.md` |
 | `/observability-review` | O Empower tem `docs/observability.md`, mas nenhuma revisão; cobriria logging/analytics dos apps |
 | `.github/copilot-instructions.md` na raiz | Se o time usa Copilot (o Mockoon já tem um) |
-| `vendor-docs/` | Docs de terceiros (Jumio etc.) com índice em `.claude/context/`, como o Potbelly faz com o Olo |
-| `.claude/context/` | Contexto só para LLM (README + `functional/` + `vendor-docs/`), separado do `docs/` humano |
-| Playwright MCP | Validação assistida; provavelmente não se aplica (sem web) |
 
 ## P4 — Provavelmente não se aplica
 
@@ -117,11 +110,20 @@ Hoje cada comando provavelmente reinventa a estrutura de títulos. No Potbelly, 
 
 ---
 
-## Ordem sugerida
+## Status final (2026-10-01)
 
-1. P0 (4 itens): poucos arquivos, fecha as referências quebradas.
-2. `/validate-workspace`, `/sync-context`, `templates/`.
-3. Agentes de review + skills `bdd-specification` e `qa-review`.
-4. ADRs e seções faltantes da constituição.
+Implementado: todo o P0, P1 (exceto templates, descartado) e P2, mais os itens de P3 não excluídos.
 
-Observação: a Lean Artifact Policy pede aprovação antes de criar mais de 2 arquivos, então cada lote deve ser proposto primeiro.
+| Item | Onde |
+|---|---|
+| Comandos | `/validate-workspace`, `/sync-context`, `/speckit.validation-plan`, `/speckit.validate`, `/quick-fix`, `/bug-report`, `/observability-review` |
+| Agentes | `code-reviewer`, `qa-reviewer`, `cross-platform-reviewer`, `current-state-analyzer`, `documentation-maintainer`, `code-refactor-planner` |
+| Skills | `bdd-specification`, `pbi-clarification`, `qa-review`, `quality-gates`, `safe-refactoring`, `security-review`, `cross-platform-impact`, `android-expert`, `ios-expert`, `architecture-diagrams`, `drawio-diagram-generation` |
+| Governança | lean policy, ledger, ADRs, constituição §9–§11, regra "código de produto não referencia o hub", hard rules e MCP no ledger, repo-scope por run (§11) |
+| Infra | hooks de tokens, `docs/improvements.md`, `.ai/`, `.github/copilot-instructions.md` e `mermaid.instructions.md` |
+
+Não portado: o gerador de relatório HTML de tokens (`generate-token-report.py`, 599 linhas, acoplado ao Potbelly); os CSVs de tokens são locais e abrem em qualquer planilha.
+
+Fora do escopo (decisão do usuário, 2026-10-01): dashboard de release/sprint, `vendor-docs/`, `.claude/context/`, Playwright MCP e `templates/`.
+
+Observação: a Lean Artifact Policy pede aprovação antes de criar mais de 2 arquivos; o lote foi autorizado explicitamente pelo usuário.

@@ -49,6 +49,12 @@ tasks; it does not replace a repository's own review conventions.
   change; when the two disagree, follow the repository.
 - The Hub must not copy product source code into hub artifacts beyond a
   short contextual excerpt needed to explain a finding — never whole files.
+- **Product code never references the hub.** No comment, string, test name,
+  or doc file in `MyIsn.Android`, `MyIsn.iOS`, or `Mockoon` may cite the hub,
+  `.claude`, `specs/`, `docs/` of this hub, or a hub plan/spec/task/review
+  artifact. Product code must stand on its own; hub artifacts may reference
+  product repositories, never the reverse. `/speckit.implement` and
+  `/speckit.review` check this.
 
 ## 5. Operational Invariants
 
@@ -137,7 +143,61 @@ goes through an MCP server. An Azure DevOps MCP server may be used for ad
 hoc, manual chat queries only, never wired into the `speckit.*` workflow
 as a silent dependency.
 
-## 9. Amendment and Precedence
+## 9. API Compatibility and Client Impact
+
+A change to a third-party contract, a Mockoon route, or any behavior a
+mobile client depends on must name the consumers it affects: `MyIsn.Android`,
+`MyIsn.iOS`, `Mockoon`, and any other consumer.
+
+Do not assume clients can tolerate a changed response shape, status code,
+error message, header, or timing. An additive change (a new optional field)
+carries materially different risk from a breaking one (a removed field, a
+changed status code) — `plan.md` states which it is, per
+[Section 7](#7-third-party-contracts-observability-and-security).
+
+Mobile apps have install bases on older versions that cannot be updated
+instantly. A contract change must keep working for an app version that has
+not updated yet, or `plan.md` must state the versioning, feature-flag, or
+rollout strategy that covers it. `Mockoon` must mirror the contract the apps
+will actually receive — a mock that drifts from the real contract is a
+defect in the hub's own validation story.
+
+## 10. Security and Privacy Rules
+
+Security and privacy are considered for every change, with extra care for
+authentication and session handling, tokens, identity verification and
+biometrics, the ISN ID wallet, geolocation, documents and certificates,
+worker forms, analytics, and any third-party integration.
+
+The never-log list lives in [Section 7](#7-third-party-contracts-observability-and-security)
+and applies identically to what a hub command writes into an artifact and to
+what product code logs at runtime. Security review is manual and spec-driven
+(Section 5): record verified / not verified / unable to verify, never a
+guess.
+
+## 11. Platform Autonomy
+
+Every implementation belongs to a repo: `MyIsn.Android`, `MyIsn.iOS`, or
+`Mockoon`. A change that touches more than one is planned once in the hub
+(`/orchestrate-feature`) and then executed per repo.
+
+- **Plans and specs are shared; execution is per repo.** Each repo gets its
+  own tasks, implementation, review, and PR, on its own branch and schedule.
+- **No fourth formal human gate.** The three gates in
+  [Section 6](#6-formal-human-gates) apply per repo; approving one repo's
+  gate never approves another's.
+- **One session, one app repo.** A session never edits both
+  `MyIsn.Android` and `MyIsn.iOS`; parallel work uses parallel sessions
+  (enforced by `.claude/hooks/enforce-one-repo-per-session.sh`).
+- **Repo-scoped commands take exactly one repo per run.** `/speckit.implement`,
+  `/speckit.validate`, and `/speckit.review` refuse to run across several
+  repos at once; a multi-repo change runs the command once per repo.
+- **Cross-platform consistency is checked, not assumed** — by
+  `/speckit.review` with the `cross-platform-reviewer` agent.
+- **A repo ships ahead of another only when compatibility is addressed**,
+  per [Section 9](#9-api-compatibility-and-client-impact).
+
+## 12. Amendment and Precedence
 
 This constitution and
 [`ENGINEERING-PRINCIPLES.md`](ENGINEERING-PRINCIPLES.md) govern how work is
@@ -155,3 +215,15 @@ silent edits made in passing during unrelated work.
   the user is in a hurry. An explicit override of a human gate
   ([Section 6](#6-formal-human-gates)) is the one exception already built
   into the workflow, and even that gets recorded, never silently applied.
+
+[`docs/governance/current-hub-decisions.md`](../docs/governance/current-hub-decisions.md)
+is the day-to-day ledger this constitution is checked against by
+`/sync-context`; a change here keeps the ledger consistent in the same pass.
+Cross-repo architectural decisions that outlive one PBI are recorded as ADRs
+in [`decisions/adr/`](../decisions/adr/README.md) — never edited after the
+fact, only superseded.
+
+> **Open Question:** No owner or approval authority is defined yet for
+> amending this constitution or accepting ADRs. Until it is, treat any
+> change to governing documents as requiring explicit sign-off from whoever
+> owns the Empower hub initiative.

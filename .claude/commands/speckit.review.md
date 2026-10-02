@@ -9,7 +9,7 @@ The `Ready for PR` verdict this command produces is the hub's Gate 3 (`constitut
 
 ## Step 0 — Detect scope and resolve repo paths
 
-Ask (if not already stated) which repo this review targets, or detect it from the current working context. Run `git -C <resolved path> status` and `git -C <resolved path> diff` to see the actual changed files.
+Review exactly **one repo per run** (constitution §11). Ask which repo if not stated, or detect it from the working context; when more than one repo changed, run the review once per repo. Also check the diff for any comment, string, or test that references the hub (constitution §4) — that is a 🔴 Must Fix. Run `git -C <resolved path> status` and `git -C <resolved path> diff` to see the actual changed files.
 
 ---
 
@@ -45,7 +45,7 @@ Every repo actually in scope must pass before Stage 2.
 
 ## Stage 2 — Code review
 
-Identify changed files in the resolved repo path (Step 0), then invoke the `code-review` skill against that diff at `medium` effort by default. Use `high` effort if the spec's Scope marks this as touching more than one repo or a third-party contract.
+Identify changed files in the resolved repo path (Step 0), then invoke the `code-review` skill (the `code-reviewer` agent defines the Empower-specific lens: [`.claude/agents/agents.md`](../agents/agents.md)) against that diff at `medium` effort by default. Use `high` effort if the spec's Scope marks this as touching more than one repo or a third-party contract.
 
 - **If this task touches any UI-visible code**: also check it against `docs/style-guide.md` in this hub. Treat a style-guide violation as a finding in this stage, same severity rules as any other code review finding. If the style guide doesn't document a value the diff needs, don't fail the review over it — note it as an open question instead
 
@@ -60,7 +60,7 @@ Any 🔴 Must Fix item: mark **Not Ready for PR**, stop.
 
 ## Stage 3 — Spec & process checklist
 
-Read `specs/<type>/<task-id>-<slug>/spec.md` and `tasks.md`. Verify:
+Read `specs/<type>/<task-id>-<slug>/spec.md` and `tasks.md`. Use the `qa-reviewer` agent (method: `qa-review` skill) to trace acceptance criteria to evidence, and the `cross-platform-reviewer` agent when more than one repo changed. They report findings only — this command sets the verdict. Verify:
 
 1. Scope matches spec.
 2. All acceptance criteria are covered by implemented behavior.

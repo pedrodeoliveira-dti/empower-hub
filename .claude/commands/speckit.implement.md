@@ -22,7 +22,7 @@ This command implements exactly **one repo per invocation**. If the user hasn't 
 - `specs/<type>/<task-id>-<slug>/spec.md`
 - `specs/<type>/<task-id>-<slug>/plan.md`
 - `specs/<type>/<task-id>-<slug>/tasks.md` — only the section for the named repo
-- The target repo's own `CLAUDE.md`, `docs/architecture.md`.
+- The target repo's own `CLAUDE.md` and whatever architecture/docs it has (`MyIsn.Android` keeps its architecture in `CLAUDE.md`; `MyIsn.iOS` has no `docs/` — see its `AGENTS.md`/`README.md`). See the `android-expert` / `ios-expert` skills.
 - **If this task touches any UI-visible code**: also read `docs/style-guide.md` in this hub. Implement against it, not just against whatever the repo's existing components already do (existing code can itself have drifted from it). If a needed value isn't documented there, say so and ask rather than guessing.
 
 ## Step 3 — Confirm the branch

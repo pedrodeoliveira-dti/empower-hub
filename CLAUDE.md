@@ -16,9 +16,13 @@ Read `constitution/EMPOWER-HUB-CONSTITUTION.md` and
 
 **Lean Artifact Policy**: This hub is lean by default. Prefer fewer files, shorter files, less duplication, and proposal-before-bulk-editing. Ask before creating or updating more than 2 files unless the user explicitly requested a broad update. See `docs/lean-artifact-policy.md`.
 
+**Artifact Minimalism**: One primary artifact per workflow step by default; a second file only when the policy's criteria are met. Current governance decisions at a glance: `docs/governance/current-hub-decisions.md`.
+
 **Hub Release Notes**: Whenever a new hub command, agent, skill, workflow, or major capability is created, update `docs/release-notes.md` in the same change — Date, Functionality, Created By, and a Documentation link. Skip it for typo fixes or wording-only edits.
 
 ## Workspace Rules
+
+- **Hard rules** (full text and reasoning: `constitution/EMPOWER-HUB-CONSTITUTION.md` §4–§5): no product source code in this hub; no deploy; no commit, push, or PR as a side effect of a workflow step (committing and opening PRs are separate, explicit user actions); no changes to CI/CD, signing, infrastructure, secrets, or release configuration; hub artifacts in English; missing information goes to Open Questions, never guessed; product code never references the hub.
 
 - **Do not make cross-repository changes without a plan.** Run `/orchestrate-feature` before editing code in more than one repo for the same piece of work.
 - Prefer small, incremental, backward-compatible changes. Additive third-party contract changes over breaking ones.
@@ -78,6 +82,8 @@ See `.claude/agents/agents.md` for the full catalog. The one to know about at th
 | `constitution/` | Governing rules and principles |
 | `docs/` | Product and cross-platform reference material |
 | `specs/` | One folder per PBI/feature/bug — spec through PR evidence |
+| `decisions/adr/` | Architecture Decision Records for cross-repo decisions |
+| `.ai/` | LLM navigation index (`repo.yaml`, `symbols.yaml`). When a command, agent, skill, or ADR is added, regenerate/extend `.ai/symbols.yaml` in the same change (skip for typo fixes) |
 | `.claude/commands/` | The `speckit.*` slash commands |
 | `.claude/agents/` | Specialized sub-agents |
 | `.claude/skills/` | Orchestration and cross-platform methodology |

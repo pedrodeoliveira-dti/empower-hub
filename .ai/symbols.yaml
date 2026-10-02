@@ -1,0 +1,188 @@
+# Machine-generated index of hub commands, agents, skills, and ADRs.
+# Source of truth stays in each file's own frontmatter; this only lists and points.
+
+symbols:
+  # Commands
+  - name: "bug-report"
+    kind: command
+    path: .claude/commands/bug-report.md
+    description: "Turn bug context pasted in chat into ONE Azure DevOps-ready Bug draft saved as specs/bugs/<slug>.md. Does not create anything in Azure DevOps."
+  - name: "observability-review"
+    kind: command
+    path: .claude/commands/observability-review.md
+    description: "Read-only review of logging and analytics in a change or area of MyIsn.Android / MyIsn.iOS against docs/observability.md — PII masking, analytics parity, no sec"
+  - name: "quick-fix"
+    kind: command
+    path: .claude/commands/quick-fix.md
+    description: "Short path for a broken test, simple build error, or narrow bug in ONE child repo, without the full spec flow. Refuses and redirects anything larger."
+  - name: "speckit.clarify"
+    kind: command
+    path: .claude/commands/speckit.clarify.md
+    description: "Identify ambiguous or underspecified areas in a spec and ask up targeted questions."
+  - name: "speckit.implement"
+    kind: command
+    path: .claude/commands/speckit.implement.md
+    description: "Execute the tasks for ONE named repo and update task status."
+  - name: "speckit.plan"
+    kind: command
+    path: .claude/commands/speckit.plan.md
+    description: "Build a per-repo technical plan from a spec."
+  - name: "speckit.pull-request"
+    kind: command
+    path: .claude/commands/speckit.pull-request.md
+    description: "Create draft Azure DevOps PRs for every changed repo, linked to the ADO work item."
+  - name: "speckit.review"
+    kind: command
+    path: .claude/commands/speckit.review.md
+    description: "Three-stage review gate (mechanical, code review, spec checklist) for implementation, before PR."
+  - name: "speckit.specify"
+    kind: command
+    path: .claude/commands/speckit.specify.md
+    description: "Create or update a cross-platform spec (PBI, Feature, or Bug)."
+  - name: "speckit.tasks"
+    kind: command
+    path: .claude/commands/speckit.tasks.md
+    description: "Generate executable, per-repo tasks from the plan."
+  - name: "speckit.validate"
+    kind: command
+    path: .claude/commands/speckit.validate.md
+    description: "Organize REAL validation evidence (test output, screenshots, smoke results) into pr-evidence.md after implementation and before review. Never fabricates results"
+  - name: "speckit.validation-plan"
+    kind: command
+    path: .claude/commands/speckit.validation-plan.md
+    description: "Optional stage after plan approval and before tasks — define how a high-risk change will be proven (per-repo evidence types) in validation-plan.md next to plan."
+  - name: "sync-context"
+    kind: command
+    path: .claude/commands/sync-context.md
+    description: "Audit the hub for drift — docs vs. real code, and hub files vs. each other and the governance ledger — then apply only the fixes the user approves."
+  - name: "validate-workspace"
+    kind: command
+    path: .claude/commands/validate-workspace.md
+    description: "Check that the child repos (MyIsn.Android, MyIsn.iOS, Mockoon) are cloned, on a sane branch, and clean — before any spec, plan, or implementation work."
+  # Agents
+  - name: "code-refactor-planner"
+    kind: agent
+    path: .claude/agents/code-refactor-planner.agent.md
+    description: "Use this agent to plan a behavior-preserving refactor in one child repo (MyIsn.Android Kotlin/Compose, MyIsn.iOS Swift/SwiftUI, or Mockoon config). Produces a p"
+  - name: "code-reviewer"
+    kind: agent
+    path: .claude/agents/code-reviewer.agent.md
+    description: "Use this agent for the diff-level code review lens of /speckit.review (Stage 2) — correctness, repo standards, style-guide and observability compliance, third-p"
+  - name: "cross-platform-reviewer"
+    kind: agent
+    path: .claude/agents/cross-platform-reviewer.agent.md
+    description: "Use this agent for the cross-platform consistency lens of /speckit.review — compares the Android and iOS implementations (and the Mockoon contract) of the same "
+  - name: "current-state-analyzer"
+    kind: agent
+    path: .claude/agents/current-state-analyzer.agent.md
+    description: "Use this agent for read-only, evidence-based analysis of how a feature, SDK, integration, module, or screen flow is currently implemented in MyIsn.Android, MyIs"
+  - name: "documentation-maintainer"
+    kind: agent
+    path: .claude/agents/documentation-maintainer.agent.md
+    description: "Use this agent for the deeper drift analysis behind /sync-context — comparing hub docs, specs, and catalogs against the real product repos and against each othe"
+  - name: "product-orchestrator"
+    kind: agent
+    path: .claude/agents/product-orchestrator.agent.md
+    description: "Use this agent to analyze cross-platform product changes across MyIsn.Android, MyIsn.iOS, and Mockoon before any implementation begins. Backs the /orchestrate-f"
+  - name: "qa-reviewer"
+    kind: agent
+    path: .claude/agents/qa-reviewer.agent.md
+    description: "Use this agent for the QA lens of /speckit.review (Stage 3) — whether the right things were validated and the evidence is sufficient: acceptance criteria traced"
+  # Skills
+  - name: "add-cross-platform-feature-flag"
+    kind: skill
+    path: .claude/skills/add-cross-platform-feature-flag/SKILL.md
+    description: "Add the same feature flag to both MyIsn.Android and MyIsn.iOS by invoking each platform's own feature-flag skill, keeping the Remote Config key and description "
+  - name: "android-expert"
+    kind: skill
+    path: .claude/skills/android-expert/SKILL.md
+    description: "Use when analyzing, planning, implementing, or reviewing work that touches MyIsn.Android. Routes a hub session to the repo's own CLAUDE.md, docs, design-token f"
+  - name: "architecture-diagrams"
+    kind: skill
+    path: .claude/skills/architecture-diagrams/SKILL.md
+    description: "Create Mermaid diagrams of cross-repository flows and impact for Empower specs, plans and PR evidence, across MyIsn.Android, MyIsn.iOS, Mockoon and third-party "
+  - name: "bdd-specification"
+    kind: skill
+    path: .claude/skills/bdd-specification/SKILL.md
+    description: "Methodology for writing behavior-oriented Given/When/Then acceptance criteria for Empower specs. Use when writing or reviewing the Acceptance Criteria section i"
+  - name: "cross-platform-impact"
+    kind: skill
+    path: .claude/skills/cross-platform-impact/SKILL.md
+    description: "Reusable method for assessing how a change affects MyIsn.Android, MyIsn.iOS, and Mockoon — classifying impact level per repo, additive vs. breaking contract cha"
+  - name: "document-projects"
+    kind: skill
+    path: .claude/skills/document-projects/SKILL.md
+    description: "Analyze every repo actually cloned in this hub (today: MyIsn.Android, MyIsn.iOS, Mockoon) and (re)generate docs/ and specs/ baseline context from the real code."
+  - name: "drawio-diagram-generation"
+    kind: skill
+    path: .claude/skills/drawio-diagram-generation/SKILL.md
+    description: "Generate diagrams.net / draw.io compatible mxGraphModel XML for architecture, integration maps, system context and dependency diagrams in Empower discovery or p"
+  - name: "ios-expert"
+    kind: skill
+    path: .claude/skills/ios-expert/SKILL.md
+    description: "Use when analyzing, planning, implementing, or reviewing work that touches MyIsn.iOS. Routes a hub session to the repo's own CLAUDE.md/AGENTS.md, StyleKit desig"
+  - name: "orchestrate-feature"
+    kind: skill
+    path: .claude/skills/orchestrate-feature/SKILL.md
+    description: "Cross-platform impact analysis before any spec work or implementation. Read-only."
+  - name: "orchestrate-pbi"
+    kind: skill
+    path: .claude/skills/orchestrate-pbi/SKILL.md
+    description: "End-to-end orchestration for one Azure DevOps work item — fetch it, archive it, plan it, and hand off implementation to the right repo."
+  - name: "pbi-clarification"
+    kind: skill
+    path: .claude/skills/pbi-clarification/SKILL.md
+    description: "Methodology for finding the ambiguities in a spec that are worth asking about, asking a small focused set of questions, and closing the loop by updating the spe"
+  - name: "po-functional-documentation"
+    kind: skill
+    path: .claude/skills/po-functional-documentation/SKILL.md
+    description: "Use this skill when a Product Owner has a feature brief, PO notes, Figma context, existing documentation, and/or an Azure DevOps reference and wants it turned i"
+  - name: "po-pbi-sync"
+    kind: skill
+    path: .claude/skills/po-pbi-sync/SKILL.md
+    description: "Use this skill when the user asks to update/sync a specific PBI that's already created in Azure DevOps (isnsoftware org, ISN project) and relates to the po-func"
+  - name: "po-work-item-publish"
+    kind: skill
+    path: .claude/skills/po-work-item-publish/SKILL.md
+    description: "Use this skill when a Product Owner wants to actually create in Azure DevOps (isnsoftware org, ISN project) a work item that was already drafted and approved un"
+  - name: "product-context"
+    kind: skill
+    path: .claude/skills/product-context/SKILL.md
+    description: "Use when analyzing or implementing a change that may affect more than one repo."
+  - name: "pull-sprint-pbis"
+    kind: skill
+    path: .claude/skills/pull-sprint-pbis/SKILL.md
+    description: "Query Azure DevOps for PBIs/Bugs/Tasks matching a keyword or tag within a given sprint. Automatically archives every result as research history under specs/pbis"
+  - name: "qa-review"
+    kind: skill
+    path: .claude/skills/qa-review/SKILL.md
+    description: "Methodology for verifying an implementation actually satisfies its spec — tracing Given/When/Then acceptance criteria to real tests or evidence, judging whether"
+  - name: "quality-gates"
+    kind: skill
+    path: .claude/skills/quality-gates/SKILL.md
+    description: "Reference for what evidence each workflow stage needs (spec, plan, tasks, implement, validate, review), which flows are high-risk enough to warrant a validation"
+  - name: "safe-refactoring"
+    kind: skill
+    path: .claude/skills/safe-refactoring/SKILL.md
+    description: "Rules for behavior-preserving refactors in the Kotlin/Jetpack Compose (MyIsn.Android) and Swift/SwiftUI (MyIsn.iOS) repos — tests first, small steps, no contrac"
+  - name: "security-review"
+    kind: skill
+    path: .claude/skills/security-review/SKILL.md
+    description: "Manual mobile security lens for specs, plans, and reviews in the Empower hub — token and session storage, biometrics, Jumio/KYC and ISN ID wallet data, geolocat"
+  - name: "technical-refinement"
+    kind: skill
+    path: .claude/skills/technical-refinement/SKILL.md
+    description: "Validate a PBI, ground it in the real iOS/Android/Mockoon code, and draft the matching platform template as a starting direction on each of its child task work "
+  # Governance
+  - name: "constitution"
+    kind: governance
+    path: constitution/EMPOWER-HUB-CONSTITUTION.md
+  - name: "engineering-principles"
+    kind: governance
+    path: constitution/ENGINEERING-PRINCIPLES.md
+  - name: "current-hub-decisions"
+    kind: ledger
+    path: docs/governance/current-hub-decisions.md
+  - name: "adr"
+    kind: adr-folder
+    path: decisions/adr/README.md

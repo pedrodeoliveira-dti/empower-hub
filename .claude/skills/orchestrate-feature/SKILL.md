@@ -27,6 +27,10 @@ If the orchestration plan recommends a hub-level spec, the next step is:
 
 using the feature description and the orchestration plan's "Write the spec" section as input.
 
+## Method
+
+The reusable method for classifying impact per repo (additive vs. breaking, older installed versions, Mockoon mirroring, sequencing) is the [`cross-platform-impact`](../cross-platform-impact/SKILL.md) skill.
+
 ## Related command
 
 If the change is already a specific Azure DevOps work item (not just a free-text feature description), consider `/orchestrate-pbi <id>` instead — it fetches the work item, archives it, and drives the rest of this same pipeline (specify → plan → tasks → implement) from that ID directly.

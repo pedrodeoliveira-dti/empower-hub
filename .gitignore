@@ -15,3 +15,7 @@ graphify-out/
 
 # Generated PDF exports of reports (regenerable from the .md)
 *.pdf
+
+# Local token-usage logs (hooks: token-log-start/stop.sh) — contain prompt snippets
+.claude/.token-usage-state/
+.claude/token-usage/
